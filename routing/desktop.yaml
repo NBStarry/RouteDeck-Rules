@@ -1,0 +1,153 @@
+# RouteDeck desktop v0.3.0 — template, not a ready-to-use subscription.
+# Replace example.invalid URLs only in a private local copy.
+# Keep approved DNS, private proxies/groups and local rules in that local copy.
+# Local rules precede the three RULE-SET rules; only one final MATCH is allowed.
+# Each region uses source A, source B, then the terminal reject provider.
+# Fixed template upgrades are manual; rule data updates every 86400 seconds.
+mode: rule
+proxies: []
+proxy-providers:
+  RouteDeck-Source-A:
+    type: http
+    url: https://example.invalid/source-a.yaml
+    proxy: DIRECT
+    path: ./providers/routedeck/v1/source-a.yaml
+    interval: 86400
+    exclude-filter: (?i)manual[-_ ]?only|ikuuu
+    exclude-type: direct|reject|reject-drop|compatible|pass|dns|socks5|http|wireguard|tailscale|ssh|sudoku|relay|selector|fallback|url-test|load-balance
+    override:
+      additional-prefix: 'A · '
+    health-check:
+      enable: true
+      url: https://www.gstatic.com/generate_204
+      interval: 300
+      lazy: true
+  RouteDeck-Source-B:
+    type: http
+    url: https://example.invalid/source-b.yaml
+    proxy: DIRECT
+    path: ./providers/routedeck/v1/source-b.yaml
+    interval: 86400
+    exclude-filter: (?i)manual[-_ ]?only|ikuuu
+    exclude-type: direct|reject|reject-drop|compatible|pass|dns|socks5|http|wireguard|tailscale|ssh|sudoku|relay|selector|fallback|url-test|load-balance
+    override:
+      additional-prefix: 'B · '
+    health-check:
+      enable: true
+      url: https://www.gstatic.com/generate_204
+      interval: 300
+      lazy: true
+  RouteDeck-Terminal:
+    type: inline
+    payload:
+    - name: RouteDeck-Terminal-Reject
+      type: reject
+proxy-groups:
+- name: RouteDeck-US
+  type: fallback
+  use:
+  - RouteDeck-Source-A
+  - RouteDeck-Source-B
+  - RouteDeck-Terminal
+  filter: (?i)^RouteDeck-Terminal-Reject$|🇺🇸|美国|美國|(?:^|[^A-Za-z])(?:US|USA|United States)(?=$|[^A-Za-z])
+  exclude-filter: (?i)manual[-_ ]?only|ikuuu|🇹🇼|台湾|台灣|(?:^|[^A-Za-z])(?:TW|Taiwan)(?=$|[^A-Za-z])|🇭🇰|香港|(?:^|[^A-Za-z])(?:HK|Hong Kong)(?=$|[^A-Za-z])|🇸🇬|新加坡|狮城|獅城|(?:^|[^A-Za-z])(?:SG|Singapore)(?=$|[^A-Za-z])
+  exclude-type: Direct|RejectDrop|Compatible|Pass|Dns|Socks5|Http|WireGuard|Tailscale|Ssh|Sudoku|Relay|Selector|Fallback|URLTest|LoadBalance|Unknown
+  url: https://www.gstatic.com/generate_204
+  interval: 300
+  lazy: true
+- name: RouteDeck-TW
+  type: fallback
+  use:
+  - RouteDeck-Source-A
+  - RouteDeck-Source-B
+  - RouteDeck-Terminal
+  filter: (?i)^RouteDeck-Terminal-Reject$|🇹🇼|台湾|台灣|(?:^|[^A-Za-z])(?:TW|Taiwan)(?=$|[^A-Za-z])
+  exclude-filter: (?i)manual[-_ ]?only|ikuuu|🇺🇸|美国|美國|(?:^|[^A-Za-z])(?:US|USA|United States)(?=$|[^A-Za-z])|🇭🇰|香港|(?:^|[^A-Za-z])(?:HK|Hong Kong)(?=$|[^A-Za-z])|🇸🇬|新加坡|狮城|獅城|(?:^|[^A-Za-z])(?:SG|Singapore)(?=$|[^A-Za-z])
+  exclude-type: Direct|RejectDrop|Compatible|Pass|Dns|Socks5|Http|WireGuard|Tailscale|Ssh|Sudoku|Relay|Selector|Fallback|URLTest|LoadBalance|Unknown
+  url: https://www.gstatic.com/generate_204
+  interval: 300
+  lazy: true
+- name: RouteDeck-HK
+  type: fallback
+  use:
+  - RouteDeck-Source-A
+  - RouteDeck-Source-B
+  - RouteDeck-Terminal
+  filter: (?i)^RouteDeck-Terminal-Reject$|🇭🇰|香港|(?:^|[^A-Za-z])(?:HK|Hong Kong)(?=$|[^A-Za-z])
+  exclude-filter: (?i)manual[-_ ]?only|ikuuu|🇺🇸|美国|美國|(?:^|[^A-Za-z])(?:US|USA|United States)(?=$|[^A-Za-z])|🇹🇼|台湾|台灣|(?:^|[^A-Za-z])(?:TW|Taiwan)(?=$|[^A-Za-z])|🇸🇬|新加坡|狮城|獅城|(?:^|[^A-Za-z])(?:SG|Singapore)(?=$|[^A-Za-z])
+  exclude-type: Direct|RejectDrop|Compatible|Pass|Dns|Socks5|Http|WireGuard|Tailscale|Ssh|Sudoku|Relay|Selector|Fallback|URLTest|LoadBalance|Unknown
+  url: https://www.gstatic.com/generate_204
+  interval: 300
+  lazy: true
+- name: RouteDeck-SG
+  type: fallback
+  use:
+  - RouteDeck-Source-A
+  - RouteDeck-Source-B
+  - RouteDeck-Terminal
+  filter: (?i)^RouteDeck-Terminal-Reject$|🇸🇬|新加坡|狮城|獅城|(?:^|[^A-Za-z])(?:SG|Singapore)(?=$|[^A-Za-z])
+  exclude-filter: (?i)manual[-_ ]?only|ikuuu|🇺🇸|美国|美國|(?:^|[^A-Za-z])(?:US|USA|United States)(?=$|[^A-Za-z])|🇹🇼|台湾|台灣|(?:^|[^A-Za-z])(?:TW|Taiwan)(?=$|[^A-Za-z])|🇭🇰|香港|(?:^|[^A-Za-z])(?:HK|Hong Kong)(?=$|[^A-Za-z])
+  exclude-type: Direct|RejectDrop|Compatible|Pass|Dns|Socks5|Http|WireGuard|Tailscale|Ssh|Sudoku|Relay|Selector|Fallback|URLTest|LoadBalance|Unknown
+  url: https://www.gstatic.com/generate_204
+  interval: 300
+  lazy: true
+- name: RouteDeck-OpenAI
+  type: select
+  proxies:
+  - RouteDeck-US
+  - RouteDeck-TW
+  - RouteDeck-HK
+  - RouteDeck-SG
+- name: RouteDeck-Proxy
+  type: select
+  proxies:
+  - RouteDeck-US
+  - RouteDeck-TW
+  - RouteDeck-HK
+  - RouteDeck-SG
+rule-providers:
+  RouteDeck-openai:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://raw.githubusercontent.com/NBStarry/RouteDeck-Rules/stable/v1/routing/rules/openai.yaml
+    path: ./rules/routedeck/v1/openai.yaml
+    interval: 86400
+    proxy: RouteDeck-Proxy
+    payload:
+    - DOMAIN-SUFFIX,chatgpt.com
+    - DOMAIN-SUFFIX,openai.com
+    - DOMAIN-SUFFIX,oaistatic.com
+    - DOMAIN-SUFFIX,oaiusercontent.com
+  RouteDeck-us:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://raw.githubusercontent.com/NBStarry/RouteDeck-Rules/stable/v1/routing/rules/us.yaml
+    path: ./rules/routedeck/v1/us.yaml
+    interval: 86400
+    proxy: RouteDeck-Proxy
+    payload:
+    - DOMAIN-SUFFIX,anthropic.com
+    - DOMAIN-SUFFIX,claude.ai
+    - DOMAIN-SUFFIX,claude.com
+    - DOMAIN-SUFFIX,claudeusercontent.com
+    - DOMAIN-SUFFIX,google.com
+    - DOMAIN-SUFFIX,googleapis.com
+    - DOMAIN-SUFFIX,gstatic.com
+    - DOMAIN-SUFFIX,googleusercontent.com
+  RouteDeck-direct:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://raw.githubusercontent.com/NBStarry/RouteDeck-Rules/stable/v1/routing/rules/direct.yaml
+    path: ./rules/routedeck/v1/direct.yaml
+    interval: 86400
+    proxy: RouteDeck-Proxy
+    payload:
+    - DOMAIN,api.deepseek.com
+rules:
+- RULE-SET,RouteDeck-openai,RouteDeck-OpenAI
+- RULE-SET,RouteDeck-us,RouteDeck-US
+- RULE-SET,RouteDeck-direct,DIRECT
+- MATCH,RouteDeck-Proxy

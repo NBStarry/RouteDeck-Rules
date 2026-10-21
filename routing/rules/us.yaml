@@ -1,0 +1,9 @@
+payload:
+- DOMAIN-SUFFIX,anthropic.com
+- DOMAIN-SUFFIX,claude.ai
+- DOMAIN-SUFFIX,claude.com
+- DOMAIN-SUFFIX,claudeusercontent.com
+- DOMAIN-SUFFIX,google.com
+- DOMAIN-SUFFIX,googleapis.com
+- DOMAIN-SUFFIX,gstatic.com
+- DOMAIN-SUFFIX,googleusercontent.com
